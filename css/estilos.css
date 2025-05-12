@@ -331,3 +331,36 @@ form button:hover {
   margin: 0 auto;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Opcional: sombra linda */
 }
+.seccion {
+  padding: 40px 20px;
+  background-color: #fff5f7;
+}
+
+.contenedor-sobre-mi {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.foto-sobre-mi img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #f08ab1;
+  margin-bottom: 20px;
+}
+
+.texto-sobre-mi h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.texto-sobre-mi p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
