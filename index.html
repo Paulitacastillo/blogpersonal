@@ -64,24 +64,34 @@
 
   <section id="momentos" class="seccion">
     <h2><i class="fas fa-spa"></i> Mis Momentos</h2>
+  
     <div class="diario">
       <h3>Mi día a día ✍️</h3>
-      <textarea id="texto-dia" placeholder="Hoy me sentí..."></textarea>
-      <button onclick="guardarNota()">Guardar</button>
+  
+      <!-- Solo tú podrás ver esta parte -->
+      <div id="editar-dia" style="display: none;">
+        <textarea id="texto-dia" placeholder="Hoy me sentí..."></textarea>
+        <button onclick="guardarNota()">Guardar</button>
+      </div>
+  
+      <!-- Parte visible para todos -->
       <div id="notas-guardadas">
         <h4>Entradas anteriores:</h4>
         <ul id="lista-notas"></ul>
       </div>
     </div>
+  
     <div class="galeria">
       <img src="img/familia.jpeg" alt="Paseo 1">
       <img src="img/hijamayor.jpeg" alt="Paseo 2">
     </div>
+  
     <div class="videos">
       <video controls src="videos/paseo-video1.mp4"></video>
       <video controls src="videos/paseo-video2.mp4"></video>
     </div>
   </section>
+  
 
   <section id="apoyo" class="seccion">
     <h2>Material de Apoyo</h2>
@@ -112,20 +122,50 @@
   <!-- Puedes agregar tus datos de contacto o frase final aquí -->
 </footer>
 
-<script src="script.js"></script>
 <script>
-  function guardarNota() {
-    const texto = document.querySelector('.diario textarea').value;
-    localStorage.setItem('diario-paula', texto);
-    alert("Tu día fue guardado 🌸");
-  }
-
-  window.addEventListener('load', () => {
-    const guardado = localStorage.getItem('diario-paula');
-    if (guardado) {
-      document.querySelector('.diario textarea').value = guardado;
+    // Solo mostrar el área de texto y el botón si es la autora (por ejemplo, tú en tu navegador)
+    const esAutora = true; // Cámbialo a false si no quieres ver la edición
+  
+    function guardarNota() {
+      const texto = document.getElementById('texto-dia').value.trim();
+      if (!texto) return;
+  
+      const hoy = new Date();
+      const fecha = hoy.toLocaleDateString('es-CL', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+      });
+  
+      const nuevaNota = { fecha, texto };
+      const notas = JSON.parse(localStorage.getItem('notas-paula')) || [];
+      notas.unshift(nuevaNota); // Agrega al inicio
+      localStorage.setItem('notas-paula', JSON.stringify(notas));
+      document.getElementById('texto-dia').value = '';
+      mostrarNotas();
     }
-  });
+  
+    function mostrarNotas() {
+      const notas = JSON.parse(localStorage.getItem('notas-paula')) || [];
+      const lista = document.getElementById('lista-notas');
+      lista.innerHTML = '';
+  
+      notas.forEach(nota => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${nota.fecha}</strong>: ${nota.texto}`;
+        lista.appendChild(li);
+      });
+    }
+  
+    window.addEventListener('load', () => {
+      if (!esAutora) {
+        const editor = document.getElementById('editor-diario');
+        if (editor) editor.style.display = 'none';
+      }
+  
+      mostrarNotas();
+    });
+  </script>
+  
+
 </script>
 </body>
 </html>
